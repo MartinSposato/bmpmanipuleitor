@@ -8,7 +8,7 @@
 
 //Para el siguiente grupo de estructuras busco evitar el "padding" (relleno)
 
-#pragma pack(push, 1)   //comienza acá
+#pragma pack(push, 1)   //comienza acá el grupo de estructuras
 
 typedef struct {
     uint16_t tipo;            // "BM" = 0x4D42
