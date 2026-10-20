@@ -8,17 +8,19 @@
 
 //Para el siguiente grupo de estructuras busco evitar el "padding" (relleno)
 
-#pragma pack(push, 1)   //comienza acá el grupo de estructuras
+#pragma pack(push, 1)   //comienza acá
 
-typedef struct {
+typedef struct
+{
     uint16_t tipo;            // "BM" = 0x4D42
     uint32_t tamanoArchivo;
     uint16_t reservado1;
     uint16_t reservado2;
     uint32_t offsetDatos;
-} CabeceraArchivo;            // 14 bytes exactos
+}CabeceraArchivo;            //14 bytes en total
 
-typedef struct {
+typedef struct
+{
     uint32_t tamanoCabecera;
     int32_t  ancho;
     int32_t  alto;
@@ -30,24 +32,22 @@ typedef struct {
     int32_t  resolucionY;
     uint32_t coloresUsados;
     uint32_t coloresImportantes;
-} CabeceraImagen;             // 40 bytes exactos
+}CabeceraImagen;            //40 bytes en total
 
 #pragma pack(pop)   //termina acá el grupo de estructuras
 
 typedef struct
 {
-    int red;
-    int green;
-    int blue;
+    uint8_t azul;
+    uint8_t verde;
+    uint8_t rojo;
 }Pixel;
 
 typedef struct
 {
-    int alto;
-    int ancho;
-    int tamanio_imagen;
-    int tamanio_pixel;
-    int inicio_datos;
+    CabeceraArchivo cabeceraArchivo;
+    CabeceraImagen cabeceraImagen;
+    Pixel **matrizPixeles;
 }Imagen;
 
 // Primitivas
