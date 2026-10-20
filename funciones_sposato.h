@@ -41,18 +41,19 @@ typedef struct
     uint8_t azul;
     uint8_t verde;
     uint8_t rojo;
-}Pixel;
+}Pixel; //Información de cada píxel (24 bits en total)
 
 typedef struct
 {
     CabeceraArchivo cabeceraArchivo;
     CabeceraImagen cabeceraImagen;
-    Pixel **matrizPixeles;
-}Imagen;
+    Pixel **matrizPixeles;  //cada fila es un vector de píxeles
+}Imagen;    //Información de cada imagen
 
 // Primitivas
 
-int promediar(int *, int* )
+Imagen* leerImagen(const char*);
+int promediar(int *, int* );
 
 compararAltoImagenes(); //compara el alto de las imágenes y devuelve la la diferencia
 compararAnchoImagenes();    //compara ancho de imágenes y devuelve la diferencia
