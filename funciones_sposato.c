@@ -30,6 +30,8 @@ Imagen *leerImagen(const char *ruta)    //el nombre es la ruta de almacenamiento
     fread(&img->cabeceraArchivo, sizeof(CabeceraArchivo), 1, archivo);  //cabecera archivo
     fread(&img->cabeceraImagen, sizeof(CabeceraImagen), 1, archivo);    //cabecera imagen
 
+    //Verificaciones:
+
     //Verificación de tipo de archivo BMP
     if (img->cabeceraArchivo.tipo != 0x4D42)    //si no es "BM" (0x4D42 = "BM")
     {
@@ -39,14 +41,43 @@ Imagen *leerImagen(const char *ruta)    //el nombre es la ruta de almacenamiento
 
         return NULL;
     }
-    
-    //Verificación de si el archivo es de 24 bits y sin compresión
+
+    //Verificación de si el archivo es de 24 bits
     if (img->cabeceraImagen.bitsPorPixel != 24)
     {
         fprintf(stderr, "Error: El archivo '%s' no es de 24 bits (es de %d bits).\n", ruta, img->cabeceraImagen.bitsPorPixel);  //mensaje en consola
         free(img);          //libero memoria
         fclose(archivo);    //cierro archivo
+
+        return NULL;
+    }
+
+    //Verificación de que el archivo no está comprimido
+    if (img->cabeceraImagen.compresion != 0)
+    {
+        fprintf(stderr, "Error: El archivo '%s' está comprimido. Solo se admiten BMP sin compresión.\n", ruta); //mensaje en consola
+        free(img);          //libero memoria
+        fclose(archivo);    //cierro archivo
+        return NULL;
+    }
+
+    //Posiciono el cursor donde comienzan los píxeles
+    fseek(archivo, img->cabeceraArchivo.offsetDatos, SEEK_SET);
+    
+    //Reservación de memoria dinámica
+    
+    //Reservo memoria dinámica para la matriz de píxeles    
+    img->matrizPixeles = malloc(img->cabeceraImagen.alto * sizeof *img->matrizPixeles);
+
+    if (img->matrizPixeles == NULL)
+    {
+        fprintf(stderr, "Error: Memoria insuficiente para la matriz de píxeles.\n");    //mensaje en consola
+        free(img);          //libero memoria
+        fclose(archivo);    //cierro archivo
     
         return NULL;
     }
+    
+    
+    
 }
